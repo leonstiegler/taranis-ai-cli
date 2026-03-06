@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 import sys
 from typing import Any, Callable
 
 import httpx
+from dotenv import load_dotenv
 
 from taranis_ai_cli.client import TaranisApiClient, TaranisApiError
 from taranis_ai_cli.config import Settings
@@ -47,6 +49,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--timeout", type=float, help="Override TARANIS_TIMEOUT")
     parser.add_argument("--insecure", action="store_true", help="Disable TLS certificate verification")
     parser.add_argument("--output", choices=["text", "json"], default="json", help="Output format")
+    parser.add_argument("--env-file", help="Load environment variables from a specific .env file")
 
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("health-check")
@@ -159,11 +162,24 @@ def _dispatch(args: argparse.Namespace, ops: TaranisOperations) -> Any:
     return handlers[args.command]()
 
 
+def _load_env(args: argparse.Namespace) -> None:
+    if args.env_file:
+        env_path = Path(args.env_file)
+        if not env_path.exists():
+            raise ValueError(f"--env-file does not exist: {env_path}")
+        load_dotenv(dotenv_path=env_path, override=False)
+        return
+
+    # Auto-load project/default .env if present, but keep explicit shell env as higher priority.
+    load_dotenv(override=False)
+
+
 def main() -> None:
     parser = _build_parser()
     args = parser.parse_args()
 
     try:
+        _load_env(args)
         settings = _apply_overrides(Settings.from_env(), args)
         client = TaranisApiClient(settings)
         ops = TaranisOperations(client)

@@ -27,11 +27,33 @@ $env:TARANIS_AUTH_MODE = "api_key"
 $env:TARANIS_API_KEY = "..."
 ```
 
+You can also keep these values in a `.env` file:
+
+```dotenv
+TARANIS_BASE_URL=http://127.0.0.1:8080
+TARANIS_AUTH_MODE=jwt
+TARANIS_USERNAME=admin
+TARANIS_PASSWORD=admin
+TARANIS_VERIFY_SSL=true
+TARANIS_TIMEOUT=30
+```
+
+The CLI auto-loads `.env` from the current working directory.
+For a specific file, use `--env-file`:
+
+```powershell
+uv run taranis-ai-cli --env-file .\.env.stage health-check
+```
+
+Configuration precedence is:
+`CLI flags > shell environment variables > env-file values > built-in defaults`
+
 ## Usage
 
 ```powershell
 uv run taranis-ai-cli --help
 uv run taranis-ai-cli health-check
+uv run taranis-ai-cli --env-file .\.env.stage health-check
 uv run taranis-ai-cli search-stories --filters '{"search":"threat","limit":5}'
 uv run taranis-ai-cli get-story --story-id 123
 uv run taranis-ai-cli create-news-item --payload '{"title":"Example","content":"..."}'

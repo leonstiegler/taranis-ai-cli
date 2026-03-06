@@ -5,6 +5,7 @@ description = "Standalone CLI for Taranis API without MCP dependency"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+  "python-dotenv>=1.0.0",
   "httpx>=0.27.0",
 ]
 
