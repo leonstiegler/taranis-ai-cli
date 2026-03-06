@@ -1,6 +1,17 @@
 # taranis-ai-cli
 
-Standalone CLI for the Taranis API, without an MCP server runtime dependency.
+`taranis-ai-cli` is a standalone command-line client for the Taranis AI API.
+It is intended for automation and agent workflows where you want direct API access
+without running an MCP server at runtime.
+
+Taranis AI project:
+- https://github.com/taranis-ai/taranis-ai
+
+This repository is not the core Taranis platform.
+It is an external CLI companion that:
+- exposes Taranis AI API operations as CLI commands
+- supports environment-based and file-based configuration (`.env`, `--env-file`)
+- includes an OpenAPI compatibility check against the latest Taranis release
 
 ## Setup
 
