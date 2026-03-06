@@ -27,7 +27,7 @@ class Settings:
 
     @classmethod
     def from_env(cls) -> "Settings":
-        base_url = os.getenv("TARANIS_BASE_URL", "http://127.0.0.1:5000").rstrip("/")
+        base_url = os.getenv("TARANIS_BASE_URL", "http://127.0.0.1:8080").rstrip("/")
         auth_mode = os.getenv("TARANIS_AUTH_MODE", "auto").strip().lower()
         if auth_mode not in {"auto", "jwt", "api_key"}:
             raise ValueError("TARANIS_AUTH_MODE must be one of: auto, jwt, api_key")
